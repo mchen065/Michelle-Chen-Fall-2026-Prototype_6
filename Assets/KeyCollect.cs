@@ -8,8 +8,18 @@ public class KeyCollect : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
+            PlayerRewind rewind =
+                other.GetComponent<PlayerRewind>();
+
+            // Don't collect keys during rewind
+            if (rewind != null && rewind.isRewinding)
+            {
+                return;
+            }
+
             Manager.CollectKey();
 
+            // Only hide THIS key
             gameObject.SetActive(false);
         }
     }

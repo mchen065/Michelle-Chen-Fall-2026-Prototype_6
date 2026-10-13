@@ -3,7 +3,7 @@ using TMPro;
 
 public class Manager : MonoBehaviour
 {
-    public float timeLeft = 60f;
+    public float timeLeft = 30f;
 
     public int keysCollected = 0;
     public int keysNeeded = 3;
@@ -13,8 +13,6 @@ public class Manager : MonoBehaviour
     public TMP_Text loopText;
 
     public PlayerRewind playerRewind;
-
-    public GameObject[] keys;
 
     public GameObject loseScreen;
 
@@ -36,21 +34,21 @@ public class Manager : MonoBehaviour
         if (gameOver)
             return;
 
-        // Don't count time while  rewinding
+        // Timer only runs when player is not rewinding
         if (playerRewind.isRewinding == false)
         {
             timeLeft -= Time.deltaTime;
         }
 
-        // First loop happens 30 seconds left
-        if (timeLeft <= 30 && loopStarted == false)
+        // Rewind once at 20 seconds
+        if (timeLeft <= 20 && loopStarted == false)
         {
             StartTimeLoop();
 
             loopStarted = true;
         }
 
-        // Time runs out
+        // you lose when time reaches 0
         if (timeLeft <= 0)
         {
             timeLeft = 0;
@@ -74,17 +72,8 @@ public class Manager : MonoBehaviour
 
         loopText.text = "TIME LOOP!";
 
-        // Start the rewind/loop
+        // ONLY rewind the player
         playerRewind.StartRewind();
-
-        // Reset the collected keys
-        keysCollected = 0;
-
-        // Bring all keys back
-        for (int i = 0; i < keys.Length; i++)
-        {
-            keys[i].SetActive(true);
-        }
 
         Invoke("HideLoopText", 2f);
     }
